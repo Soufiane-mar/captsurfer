@@ -1160,7 +1160,7 @@ hideLoadingScreen()
 - [ ] **Step 2: Run the unit test suite to confirm nothing broke**
 
 Run: `npm run test`
-Expected: PASS, all 8 tests (scatterLayout: 3, floatIntensity: 3, reducedMotion: 2) green.
+Expected: PASS, all tests green (scatterLayout: 4, floatIntensity: 3, reducedMotion: 2, buildCamera: 3 — the buildCamera smoke test was added after a code review during Task 20).
 
 - [ ] **Step 3: Commit**
 
