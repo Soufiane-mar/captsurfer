@@ -22,6 +22,8 @@ if (prefersReducedMotion()) {
     part.rotation.copy(rotation)
   })
   group.rotation.y = FACING_ROTATION_Y
+  // Camera intentionally stays at its initial z=6 framing (not the scroll path's
+  // zoom-start z=3) so the full assembled camera stays in frame as a resting shot.
 } else {
   const { state } = createScrollTimeline({ heroElement, cameraGroup: group, parts, camera })
   floatState = state
