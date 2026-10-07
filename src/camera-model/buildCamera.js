@@ -41,7 +41,10 @@ export function buildCamera() {
       rotation: part.rotation.clone(),
     }
 
-    const scattered = getScatteredTransform(index, total)
+    // Keep the scattered cloud inside the camera's view frustum at every supported
+    // aspect ratio (radius 4 put several parts off-screen, especially on narrow/mobile
+    // viewports) while still reading as a deliberate "explosion", not a tight cluster.
+    const scattered = getScatteredTransform(index, total, 2.2)
     part.position.set(...scattered.position)
     part.rotation.set(...scattered.rotation)
 

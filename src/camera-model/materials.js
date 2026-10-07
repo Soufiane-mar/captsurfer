@@ -5,7 +5,7 @@ export function createMaterials() {
     brushedMetal: new THREE.MeshStandardMaterial({
       color: 0x8a8d90,
       metalness: 1,
-      roughness: 0.35,
+      roughness: 0.5,
     }),
     matteBody: new THREE.MeshStandardMaterial({
       color: 0x111214,
@@ -19,8 +19,6 @@ export function createMaterials() {
       transmission: 1,
       thickness: 0.3,
       ior: 1.5,
-      transparent: true,
-      opacity: 0.9,
     }),
     accent: new THREE.MeshStandardMaterial({
       color: 0x1a1a1a,

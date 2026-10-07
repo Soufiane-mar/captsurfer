@@ -23,23 +23,24 @@ export function createSceneSetup(canvas) {
   renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2))
   renderer.setSize(window.innerWidth, window.innerHeight)
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.1
+  renderer.toneMappingExposure = 0.7
 
   const pmremGenerator = new THREE.PMREMGenerator(renderer)
   const envScene = new RoomEnvironment()
   scene.environment = pmremGenerator.fromScene(envScene, 0.04).texture
+  scene.environmentIntensity = 0.4
   pmremGenerator.dispose()
   envScene.dispose()
 
-  const keyLight = new THREE.DirectionalLight(0xffffff, 2.2)
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.1)
   keyLight.position.set(3, 4, 5)
   scene.add(keyLight)
 
-  const fillLight = new THREE.DirectionalLight(0x6688ff, 0.6)
+  const fillLight = new THREE.DirectionalLight(0x6688ff, 0.35)
   fillLight.position.set(-4, 1, 3)
   scene.add(fillLight)
 
-  const rimLight = new THREE.DirectionalLight(0xffffff, 1.4)
+  const rimLight = new THREE.DirectionalLight(0xffffff, 0.7)
   rimLight.position.set(0, 3, -5)
   scene.add(rimLight)
 
@@ -50,9 +51,9 @@ export function createSceneSetup(canvas) {
     // UnrealBloomPass(resolution, strength, radius, threshold)
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.5,
+      0.25,
       0.4,
-      0.85,
+      0.9,
     )
     composer.addPass(bloomPass)
   }
