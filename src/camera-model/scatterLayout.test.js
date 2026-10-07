@@ -23,4 +23,11 @@ describe('getScatteredTransform', () => {
       expect(length).toBeLessThanOrEqual(4.001)
     }
   })
+
+  it('does not divide by zero when there is only one part', () => {
+    const result = getScatteredTransform(0, 1, 4)
+    expect(Number.isNaN(result.position[0])).toBe(false)
+    expect(Number.isNaN(result.position[1])).toBe(false)
+    expect(Number.isNaN(result.position[2])).toBe(false)
+  })
 })

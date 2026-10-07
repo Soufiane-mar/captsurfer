@@ -10,6 +10,7 @@ export function getScatteredTransform(index, total, radius = 4) {
     Math.sin(theta) * radiusAtY * radius,
   ]
 
+  // Arbitrary, mutually distinct multipliers so each axis de-syncs from the others.
   const rotation = [
     (index * 0.37) % (Math.PI * 2),
     (index * 0.53) % (Math.PI * 2),
