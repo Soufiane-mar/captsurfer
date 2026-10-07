@@ -1,5 +1,36 @@
 import { describe, it, expect } from 'vitest'
-import { cameraAt, apertureAt, glassVisibility, diveBlend } from './timeline.js'
+import { cameraAt, apertureAt, glassVisibility, diveBlend, heroScrollToT, ASSEMBLY_END } from './timeline.js'
+
+describe('heroScrollToT', () => {
+  it('spans the whole timeline', () => {
+    expect(heroScrollToT(0)).toBe(0)
+    expect(heroScrollToT(1)).toBe(1)
+  })
+
+  it('always moves forward when scrolling forward', () => {
+    let previous = 0
+    for (let s = 0.001; s <= 1; s += 0.001) {
+      const t = heroScrollToT(s)
+      expect(t).toBeGreaterThan(previous)
+      previous = t
+    }
+  })
+
+  it('assembles in the first 2.1 of 4.9 viewports, about twice as fast as the dive', () => {
+    expect(heroScrollToT(2.1 / 4.9)).toBeCloseTo(ASSEMBLY_END, 9)
+    const assemblyRate = ASSEMBLY_END / (2.1 / 4.9)
+    const diveRate = (1 - ASSEMBLY_END) / (1 - 2.1 / 4.9)
+    expect(assemblyRate / diveRate).toBeCloseTo(2, 9)
+  })
+
+  it('changes pace smoothly: no velocity kink at the end of the assembly', () => {
+    const a = 2.1 / 4.9
+    const h = 1e-6
+    const left = (heroScrollToT(a) - heroScrollToT(a - h)) / h
+    const right = (heroScrollToT(a + h) - heroScrollToT(a)) / h
+    expect(Math.abs(left - right)).toBeLessThan(1e-3)
+  })
+})
 
 describe('cameraAt', () => {
   it('moves continuously: no frame-to-frame jump anywhere on the timeline', () => {

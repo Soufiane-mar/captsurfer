@@ -7,7 +7,16 @@ import { createSceneSetup } from './scene/sceneSetup.js'
 import { framingScale } from './scene/framing.js'
 import { buildCamera } from './camera-model/buildCamera.js'
 import { applyPartPose } from './animation/assembly.js'
-import { cameraAt, apertureAt, glassVisibility, diveBlend, HERO_T, ASSEMBLY_END } from './animation/timeline.js'
+import {
+  cameraAt,
+  apertureAt,
+  glassVisibility,
+  diveBlend,
+  heroScrollToT,
+  HERO_T,
+  ASSEMBLY_END,
+  HERO_SCROLL_VIEWPORTS,
+} from './animation/timeline.js'
 import { lerp } from './animation/easing.js'
 import { createSmoothScroll } from './scroll/scrollDriver.js'
 import { prefersReducedMotion } from './scroll/reducedMotion.js'
@@ -96,7 +105,7 @@ if (prefersReducedMotion()) {
   hideLoadingScreen()
 } else {
   const smoothScroll = createSmoothScroll()
-  const hero = smoothScroll.track({ trigger: heroElement, start: 'top top', end: '+=700%', pin: true })
+  const hero = smoothScroll.track({ trigger: heroElement, start: 'top top', end: `+=${HERO_SCROLL_VIEWPORTS * 100}%`, pin: true })
   const portfolioScroll = smoothScroll.track({ trigger: portfolioElement, start: 'top top', end: 'bottom bottom' })
   const portfolio = createPortfolioLens(portfolioElement)
   window.addEventListener('resize', onResize)
@@ -112,14 +121,14 @@ if (prefersReducedMotion()) {
   })
 
   let lastT = -1
-  poseScene(hero.advance(0), 0)
+  poseScene(heroScrollToT(hero.advance(0)), 0)
   renderer.compileAsync(scene, camera).then(() => {
     // The first render allocates the post-processing targets (~100ms): do it while
     // the loading screen is still up so the animation never starts with a hitch.
     composer.render()
     gsap.ticker.add((time, deltaMs) => {
       const dt = deltaMs / 1000
-      const t = hero.advance(dt)
+      const t = heroScrollToT(hero.advance(dt))
       // Parts float while exploded; once assembled the 3D only changes with scroll.
       if (needsRender || t < ASSEMBLY_END || Math.abs(t - lastT) > 1e-6) {
         poseScene(t, time)

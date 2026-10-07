@@ -9,6 +9,38 @@ export const HERO_T = 0.66
 // Last part (the lens) is seated here; nothing in the model moves on its own after.
 export const ASSEMBLY_END = 0.6
 
+// Pinned hero length, in viewport heights. The assembly gets 2.1 of them and the
+// rest (hero shot + dive) 2.8, so assembling runs twice as fast per scroll as the dive.
+export const HERO_SCROLL_VIEWPORTS = 4.9
+const ASSEMBLY_SCROLL_SHARE = 2.1 / HERO_SCROLL_VIEWPORTS
+
+function hermite(s, s0, s1, v0, v1, m0, m1) {
+  const h = s1 - s0
+  const u = (s - s0) / h
+  const u2 = u * u
+  const u3 = u2 * u
+  return (
+    (2 * u3 - 3 * u2 + 1) * v0 +
+    (u3 - 2 * u2 + u) * h * m0 +
+    (-2 * u3 + 3 * u2) * v1 +
+    (u3 - u2) * h * m1
+  )
+}
+
+// Maps hero scroll progress (0..1) to timeline position t. Speeds are matched at the
+// junction so the change of pace after the assembly is gradual, never a kink.
+export function heroScrollToT(s) {
+  const a = ASSEMBLY_SCROLL_SHARE
+  const fast = ASSEMBLY_END / a
+  const slow = (1 - ASSEMBLY_END) / (1 - a)
+  const junction = 1
+  if (s <= 0) return 0
+  if (s >= 1) return 1
+  return s < a
+    ? hermite(s, 0, a, 0, ASSEMBLY_END, fast, junction)
+    : hermite(s, a, 1, ASSEMBLY_END, 1, junction, slow)
+}
+
 const AXIS_Y = -0.04
 
 // [position x, y, z, target x, y, z, vertical fov]
