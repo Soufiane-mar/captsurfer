@@ -1,3 +1,31 @@
 import './styles/main.css'
+import { createSceneSetup } from './scene/sceneSetup.js'
+import { startRenderLoop } from './scene/loop.js'
+import { buildCamera } from './camera-model/buildCamera.js'
+import { createScrollTimeline, FACING_ROTATION_Y } from './scroll/scrollTimeline.js'
+import { prefersReducedMotion } from './scroll/reducedMotion.js'
+import { hideLoadingScreen } from './ui/loadingScreen.js'
 
-document.getElementById('loading-screen')?.classList.add('loading-screen--hidden')
+const canvas = document.getElementById('scene')
+const heroElement = document.getElementById('hero')
+
+const { scene, camera, renderer, composer } = createSceneSetup(canvas)
+const { group, parts } = buildCamera()
+scene.add(group)
+
+let floatState = null
+
+if (prefersReducedMotion()) {
+  parts.forEach((part) => {
+    const { position, rotation } = part.userData.assembled
+    part.position.copy(position)
+    part.rotation.copy(rotation)
+  })
+  group.rotation.y = FACING_ROTATION_Y
+} else {
+  const { state } = createScrollTimeline({ heroElement, cameraGroup: group, parts, camera })
+  floatState = state
+}
+
+startRenderLoop({ renderer, composer, cameraGroup: group, floatState })
+hideLoadingScreen()
