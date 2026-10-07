@@ -1,6 +1,6 @@
 # CaptSurfer Phase 1 — 3D Camera Model & Scroll Assembly — Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Build the CaptSurfer project scaffold and the hero's centerpiece: a Three.js camera model made of 12 separate parts that starts scattered, assembles itself as the user scrolls, then turns to face the viewer, driven by GSAP ScrollTrigger and reversible on scroll-up.
 
@@ -23,23 +23,23 @@
 - Create: `src/main.js` (stub)
 - Create: `src/styles/main.css`
 
-- [ ] **Step 1: Create the folder structure**
+- [x] **Step 1: Create the folder structure**
 
 Run: `mkdir -p src/{scene,camera-model/parts,scroll,ui,styles} docs/superpowers/plans`
 Expected: no output, folders created.
 
-- [ ] **Step 2: Initialize package.json**
+- [x] **Step 2: Initialize package.json**
 
 Run: `npm init -y`
 Expected: `package.json` created with default fields.
 
-- [ ] **Step 3: Install dependencies**
+- [x] **Step 3: Install dependencies**
 
 Run: `npm install three gsap`
 Run: `npm install -D vite vitest jsdom`
 Expected: both commands exit 0, `node_modules/` and a lockfile appear, `package.json` now lists `three`/`gsap` under `dependencies` and `vite`/`vitest`/`jsdom` under `devDependencies`.
 
-- [ ] **Step 4: Edit package.json scripts and type**
+- [x] **Step 4: Edit package.json scripts and type**
 
 Edit `package.json` so it contains at least:
 
@@ -57,7 +57,7 @@ Edit `package.json` so it contains at least:
 
 (Keep the `dependencies`/`devDependencies` npm already wrote.)
 
-- [ ] **Step 5: Write vite.config.js**
+- [x] **Step 5: Write vite.config.js**
 
 ```js
 import { defineConfig } from 'vite'
@@ -67,7 +67,7 @@ export default defineConfig({
 })
 ```
 
-- [ ] **Step 6: Write vitest.config.js**
+- [x] **Step 6: Write vitest.config.js**
 
 ```js
 import { defineConfig } from 'vitest/config'
@@ -79,7 +79,7 @@ export default defineConfig({
 })
 ```
 
-- [ ] **Step 7: Write .gitignore**
+- [x] **Step 7: Write .gitignore**
 
 ```
 node_modules
@@ -87,7 +87,7 @@ dist
 .DS_Store
 ```
 
-- [ ] **Step 8: Write index.html**
+- [x] **Step 8: Write index.html**
 
 ```html
 <!doctype html>
@@ -111,7 +111,7 @@ dist
 </html>
 ```
 
-- [ ] **Step 9: Write src/styles/main.css**
+- [x] **Step 9: Write src/styles/main.css**
 
 ```css
 * {
@@ -190,7 +190,7 @@ body {
 }
 ```
 
-- [ ] **Step 10: Write a temporary src/main.js stub**
+- [x] **Step 10: Write a temporary src/main.js stub**
 
 ```js
 import './styles/main.css'
@@ -198,7 +198,7 @@ import './styles/main.css'
 document.getElementById('loading-screen')?.classList.add('loading-screen--hidden')
 ```
 
-- [ ] **Step 11: Commit**
+- [x] **Step 11: Commit**
 
 ```bash
 git add -A
@@ -213,7 +213,7 @@ git commit -m "chore: scaffold Vite project for CaptSurfer"
 - Create: `src/camera-model/scatterLayout.js`
 - Test: `src/camera-model/scatterLayout.test.js`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```js
 import { describe, it, expect } from 'vitest'
@@ -244,12 +244,12 @@ describe('getScatteredTransform', () => {
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm run test -- scatterLayout`
 Expected: FAIL — `Cannot find module './scatterLayout.js'` (or similar import error).
 
-- [ ] **Step 3: Write the implementation**
+- [x] **Step 3: Write the implementation**
 
 ```js
 export function getScatteredTransform(index, total, radius = 4) {
@@ -274,12 +274,12 @@ export function getScatteredTransform(index, total, radius = 4) {
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npm run test -- scatterLayout`
 Expected: PASS, 3 tests green.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/camera-model/scatterLayout.js src/camera-model/scatterLayout.test.js
@@ -294,7 +294,7 @@ git commit -m "feat: add deterministic scatter layout math"
 - Create: `src/scroll/floatIntensity.js`
 - Test: `src/scroll/floatIntensity.test.js`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```js
 import { describe, it, expect } from 'vitest'
@@ -317,12 +317,12 @@ describe('getFloatIntensity', () => {
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm run test -- floatIntensity`
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Write the implementation**
+- [x] **Step 3: Write the implementation**
 
 ```js
 const ASSEMBLY_END = 0.6
@@ -334,12 +334,12 @@ export function getFloatIntensity(progress) {
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npm run test -- floatIntensity`
 Expected: PASS, 3 tests green.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/scroll/floatIntensity.js src/scroll/floatIntensity.test.js
@@ -354,7 +354,7 @@ git commit -m "feat: add float-intensity easing for idle motion"
 - Create: `src/scroll/reducedMotion.js`
 - Test: `src/scroll/reducedMotion.test.js`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```js
 import { describe, it, expect, afterEach, vi } from 'vitest'
@@ -377,12 +377,12 @@ describe('prefersReducedMotion', () => {
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm run test -- reducedMotion`
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Write the implementation**
+- [x] **Step 3: Write the implementation**
 
 ```js
 export function prefersReducedMotion() {
@@ -390,12 +390,12 @@ export function prefersReducedMotion() {
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npm run test -- reducedMotion`
 Expected: PASS, 2 tests green.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/scroll/reducedMotion.js src/scroll/reducedMotion.test.js
@@ -409,7 +409,7 @@ git commit -m "feat: add prefers-reduced-motion detection"
 **Files:**
 - Create: `src/camera-model/materials.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -445,7 +445,7 @@ export function createMaterials() {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/materials.js
@@ -459,7 +459,7 @@ git commit -m "feat: add shared PBR materials for the camera model"
 **Files:**
 - Create: `src/scene/sceneSetup.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -527,7 +527,7 @@ export function createSceneSetup(canvas) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/scene/sceneSetup.js
@@ -541,7 +541,7 @@ git commit -m "feat: add Three.js scene setup with cinematic lighting and bloom"
 **Files:**
 - Create: `src/scene/loop.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 The scattered starting state needs a slow drift/rotation ("flottement") per the spec. Rather than animate each part's position/rotation directly (which GSAP also tweens, and would fight it), this applies a gentle bob + spin to the whole camera group, faded out via `floatState.floatIntensity` so it settles naturally as assembly proceeds — and both are zero by the time GSAP's own "face the viewer" rotation of the same group takes over at progress 0.6.
 
@@ -569,7 +569,7 @@ export function startRenderLoop({ renderer, composer, cameraGroup = null, floatS
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/scene/loop.js
@@ -583,7 +583,7 @@ git commit -m "feat: add render loop with idle float/spin while parts are scatte
 **Files:**
 - Create: `src/camera-model/parts/body.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -597,7 +597,7 @@ export function createBody(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/body.js
@@ -611,7 +611,7 @@ git commit -m "feat: add camera body part"
 **Files:**
 - Create: `src/camera-model/parts/topPlate.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -625,7 +625,7 @@ export function createTopPlate(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/topPlate.js
@@ -639,7 +639,7 @@ git commit -m "feat: add camera top plate part"
 **Files:**
 - Create: `src/camera-model/parts/grip.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -654,7 +654,7 @@ export function createGrip(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/grip.js
@@ -668,7 +668,7 @@ git commit -m "feat: add camera grip part"
 **Files:**
 - Create: `src/camera-model/parts/shutterButton.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -682,7 +682,7 @@ export function createShutterButton(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/shutterButton.js
@@ -696,7 +696,7 @@ git commit -m "feat: add shutter button part"
 **Files:**
 - Create: `src/camera-model/parts/dial.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -710,7 +710,7 @@ export function createDial(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/dial.js
@@ -724,7 +724,7 @@ git commit -m "feat: add mode dial part"
 **Files:**
 - Create: `src/camera-model/parts/viewfinder.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -738,7 +738,7 @@ export function createViewfinder(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/viewfinder.js
@@ -752,7 +752,7 @@ git commit -m "feat: add viewfinder part"
 **Files:**
 - Create: `src/camera-model/parts/lensMount.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -766,7 +766,7 @@ export function createLensMount(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/lensMount.js
@@ -780,7 +780,7 @@ git commit -m "feat: add lens mount part"
 **Files:**
 - Create: `src/camera-model/parts/lensBarrel.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -795,7 +795,7 @@ export function createLensBarrel(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/lensBarrel.js
@@ -809,7 +809,7 @@ git commit -m "feat: add lens barrel part"
 **Files:**
 - Create: `src/camera-model/parts/lensRings.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -831,7 +831,7 @@ export function createLensRings(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/lensRings.js
@@ -845,7 +845,7 @@ git commit -m "feat: add lens focus/zoom rings"
 **Files:**
 - Create: `src/camera-model/parts/frontLens.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -860,7 +860,7 @@ export function createFrontLens(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/frontLens.js
@@ -874,7 +874,7 @@ git commit -m "feat: add front lens element"
 **Files:**
 - Create: `src/camera-model/parts/innerLenses.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -897,7 +897,7 @@ export function createInnerLenses(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/innerLenses.js
@@ -911,7 +911,7 @@ git commit -m "feat: add inner lens elements"
 **Files:**
 - Create: `src/camera-model/parts/diaphragmBlades.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -939,7 +939,7 @@ export function createDiaphragmBlades(materials) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/parts/diaphragmBlades.js
@@ -953,7 +953,7 @@ git commit -m "feat: add diaphragm blades"
 **Files:**
 - Create: `src/camera-model/buildCamera.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import * as THREE from 'three'
@@ -1010,7 +1010,7 @@ export function buildCamera() {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/camera-model/buildCamera.js
@@ -1024,7 +1024,7 @@ git commit -m "feat: assemble camera parts with scattered starting transforms"
 **Files:**
 - Create: `src/scroll/scrollTimeline.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 import gsap from 'gsap'
@@ -1083,7 +1083,7 @@ export function createScrollTimeline({ heroElement, cameraGroup, parts, camera }
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/scroll/scrollTimeline.js
@@ -1097,7 +1097,7 @@ git commit -m "feat: add pinned scroll-scrubbed assembly timeline"
 **Files:**
 - Create: `src/ui/loadingScreen.js`
 
-- [ ] **Step 1: Write the module**
+- [x] **Step 1: Write the module**
 
 ```js
 export function hideLoadingScreen() {
@@ -1108,7 +1108,7 @@ export function hideLoadingScreen() {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/ui/loadingScreen.js
@@ -1122,7 +1122,7 @@ git commit -m "feat: add loading screen dismissal helper"
 **Files:**
 - Modify: `src/main.js`
 
-- [ ] **Step 1: Replace the stub with the full wiring**
+- [x] **Step 1: Replace the stub with the full wiring**
 
 ```js
 import './styles/main.css'
@@ -1157,12 +1157,12 @@ startRenderLoop({ renderer, composer, cameraGroup: group, floatState })
 hideLoadingScreen()
 ```
 
-- [ ] **Step 2: Run the unit test suite to confirm nothing broke**
+- [x] **Step 2: Run the unit test suite to confirm nothing broke**
 
 Run: `npm run test`
 Expected: PASS, all tests green (scatterLayout: 4, floatIntensity: 3, reducedMotion: 2, buildCamera: 3 — the buildCamera smoke test was added after a code review during Task 20).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/main.js
@@ -1175,7 +1175,7 @@ git commit -m "feat: wire scene, camera model, and scroll timeline together"
 
 **Files:** none (verification only)
 
-- [ ] **Step 1: Start the dev server**
+- [x] **Step 1: Start the dev server**
 
 Use the `preview_start` tool with `{"name": "captsurfer-dev"}` after adding this entry to `.claude/launch.json`:
 
@@ -1193,18 +1193,18 @@ Use the `preview_start` tool with `{"name": "captsurfer-dev"}` after adding this
 }
 ```
 
-- [ ] **Step 2: Check for console/network errors**
+- [x] **Step 2: Check for console/network errors**
 
 Use `read_console_messages` (expect no errors) and `preview_logs` (expect no Vite/Rollup errors).
 
-- [ ] **Step 3: Verify the assembly animation visually**
+- [x] **Step 3: Verify the assembly animation visually**
 
 Use `read_page` then `computer` scroll actions to scroll down through the pinned hero in several increments, taking a `screenshot` after each: confirm the 12 parts visibly move from scattered to assembled, then the whole camera rotates to face the viewer. Scroll back up and confirm the animation reverses.
 
-- [ ] **Step 4: Verify mobile layout**
+- [x] **Step 4: Verify mobile layout**
 
 Use `resize_window` with `preset: "mobile"`, reload, repeat the scroll check, confirm no console errors and that bloom is disabled (visual check: slightly less glow, acceptable since `isMobile` skips `UnrealBloomPass`). Reset with `resize_window preset: "desktop"` afterward.
 
-- [ ] **Step 5: Report back to the user**
+- [x] **Step 5: Report back to the user**
 
 Summarize what was verified (desktop + mobile, console clean, scroll reversible) and share a screenshot before moving to Phase 2.
