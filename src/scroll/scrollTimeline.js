@@ -8,19 +8,24 @@ const ASSEMBLE_DURATION = 0.6
 const FACE_DURATION = 0.2
 const ZOOM_START_DURATION = 0.2
 
+// The model is assembled with its lens facing -Z, while the scene camera sits on +Z.
+// A half turn brings the lens around to face the viewer. The reduced-motion path in
+// main.js must apply this same rotation directly (it skips this timeline entirely).
+export const FACING_ROTATION_Y = Math.PI
+
 export function createScrollTimeline({ heroElement, cameraGroup, parts, camera }) {
   const state = { floatIntensity: 1 }
 
   const timeline = gsap.timeline({
+    onUpdate: () => {
+      state.floatIntensity = getFloatIntensity(timeline.progress())
+    },
     scrollTrigger: {
       trigger: heroElement,
       start: 'top top',
       end: '+=300%',
       scrub: 1,
       pin: true,
-      onUpdate: (self) => {
-        state.floatIntensity = getFloatIntensity(self.progress)
-      },
     },
   })
 
@@ -38,11 +43,9 @@ export function createScrollTimeline({ heroElement, cameraGroup, parts, camera }
     )
   })
 
-  // The model is assembled with its lens facing -Z, while the scene camera sits on +Z.
-  // A half turn brings the lens around to face the viewer.
   timeline.to(
     cameraGroup.rotation,
-    { y: Math.PI, duration: FACE_DURATION, ease: 'power2.inOut' },
+    { y: FACING_ROTATION_Y, duration: FACE_DURATION, ease: 'power2.inOut' },
     ASSEMBLE_DURATION,
   )
 
