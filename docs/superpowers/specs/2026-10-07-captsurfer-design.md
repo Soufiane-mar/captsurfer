@@ -128,3 +128,14 @@ captsurfer/
 
 - Bascule sur Opus pour la phase 1 (modèle 3D + animation)
 - Sonnet pour le reste (zoom/portfolio, contact, footer, déploiement)
+
+## Révision du 2026-10-07 (retour utilisateur sur la phase 1)
+
+La première version a été rejetée (pièces trop sommaires, animation saccadée). Nouvelle direction, validée par l'utilisateur :
+
+- **Référence visuelle** : un schéma en vue éclatée d'un reflex argentique 50mm f/1.8 fourni par l'utilisateur, sans reprendre les noms des pièces.
+- **Rendu dessin animé** : ombrage en aplats (toon, 3 tons) et contours à l'encre, aucun effet métal (pas de reflets, pas d'environment map, pas de bloom). Fond sombre gris-bleu nuit conservé.
+- **Modèle** : boîtier, gainage, capot, prisme, griffe flash, miroir, écran de visée, obturateur, circuit, engrenages, semelle, dos, poignée, monture, molettes, levier, déclencheur, compteur, manivelle, retardateur, œillets, vis ; objectif complet (monture baïonnette, fûts, bague de diaphragme, diaphragme à 8 lamelles, 4 lentilles, bague de mise au point moletée, bague frontale).
+- **Éclaté** : comme le schéma, l'objectif s'étire le long de son axe, le capot monte, la semelle descend, le dos recule. Ordre d'assemblage : intérieur d'abord, puis capots, commandes, vis (vissées), objectif qui se monte en dernier avec une rotation de baïonnette.
+- **Fluidité** : tout est calculé chaque image à partir d'une progression unique lissée (Lenis + suivi exponentiel) ; easing quintique ; trajectoire caméra en spline à vitesse continue. Continuité prouvée par des tests.
+- **Entrée dans l'objectif** : la caméra s'aligne sur l'axe, traverse les lentilles (qui s'effacent juste avant d'être atteintes) et le diaphragme (qui s'ouvre en grand), puis se fond dans la couleur du fond de page. Le portfolio de la phase 2 apparaîtra à partir de cet état.

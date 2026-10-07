@@ -6,7 +6,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: #05050a;
+  background: #161921;
   color: #e8e8ec;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   overflow-x: hidden;
@@ -46,7 +46,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 10;
-  background: #05050a;
+  background: #161921;
   display: flex;
   align-items: center;
   justify-content: center;

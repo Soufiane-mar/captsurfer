@@ -1,33 +1,101 @@
 import './styles/main.css'
+import * as THREE from 'three'
+import gsap from 'gsap'
 import { createSceneSetup } from './scene/sceneSetup.js'
-import { startRenderLoop } from './scene/loop.js'
+import { framingScale } from './scene/framing.js'
 import { buildCamera } from './camera-model/buildCamera.js'
-import { createScrollTimeline, FACING_ROTATION_Y } from './scroll/scrollTimeline.js'
+import { applyPartPose } from './animation/assembly.js'
+import { cameraAt, apertureAt, glassVisibility, diveBlend, HERO_T } from './animation/timeline.js'
+import { lerp } from './animation/easing.js'
+import { createScrollDriver } from './scroll/scrollDriver.js'
 import { prefersReducedMotion } from './scroll/reducedMotion.js'
 import { hideLoadingScreen } from './ui/loadingScreen.js'
 
 const canvas = document.getElementById('scene')
 const heroElement = document.getElementById('hero')
 
-const { scene, camera, renderer, composer } = createSceneSetup(canvas)
-const { group, parts } = buildCamera()
-scene.add(group)
+const { scene, camera, renderer, composer, resize } = createSceneSetup(canvas)
+const { root, parts, glassElements, diaphragm } = buildCamera()
+scene.add(root)
 
-let floatState = null
-
-if (prefersReducedMotion()) {
-  parts.forEach((part) => {
-    const { position, rotation } = part.userData.assembled
-    part.position.copy(position)
-    part.rotation.copy(rotation)
+// Each glass element fades as a whole, including the glint drawn on the front one.
+const glassMaterials = glassElements.map((element) => {
+  const materials = []
+  element.traverse((node) => {
+    if (node.material) materials.push({ material: node.material, opacity: node.material.opacity })
   })
-  group.rotation.y = FACING_ROTATION_Y
-  // Camera intentionally stays at its initial z=6 framing (not the scroll path's
-  // zoom-start z=3) so the full assembled camera stays in frame as a resting shot.
-} else {
-  const { state } = createScrollTimeline({ heroElement, cameraGroup: group, parts, camera })
-  floatState = state
+  return materials
+})
+const cameraState = new Array(7)
+const lookTarget = new THREE.Vector3()
+const elementPosition = new THREE.Vector3()
+let framing = framingScale(camera.aspect)
+
+function poseScene(t, time) {
+  parts.forEach((part) => applyPartPose(part, t, time))
+  diaphragm.setOpenness(apertureAt(t))
+
+  cameraAt(t, cameraState)
+  const scale = lerp(framing, 1, diveBlend(t))
+  lookTarget.set(cameraState[3], cameraState[4], cameraState[5])
+  camera.position.set(cameraState[0], cameraState[1], cameraState[2]).sub(lookTarget).multiplyScalar(scale).add(lookTarget)
+  camera.lookAt(lookTarget)
+  if (camera.fov !== cameraState[6]) {
+    camera.fov = cameraState[6]
+    camera.updateProjectionMatrix()
+  }
+
+  root.updateMatrixWorld()
+  glassElements.forEach((element, i) => {
+    element.getWorldPosition(elementPosition)
+    const visibility = glassVisibility(camera.position.z - elementPosition.z)
+    glassMaterials[i].forEach(({ material, opacity }) => {
+      material.opacity = opacity * visibility
+    })
+    element.visible = visibility > 0
+  })
 }
 
-startRenderLoop({ renderer, composer, cameraGroup: group, floatState })
-hideLoadingScreen()
+function onResize() {
+  resize()
+  framing = framingScale(camera.aspect)
+}
+
+if (prefersReducedMotion()) {
+  const renderStill = () => {
+    poseScene(HERO_T, 0)
+    composer.render()
+  }
+  window.addEventListener('resize', () => {
+    onResize()
+    renderStill()
+  })
+  renderStill()
+  hideLoadingScreen()
+} else {
+  const driver = createScrollDriver(heroElement)
+  window.addEventListener('resize', onResize)
+  poseScene(driver.advance(0), 0)
+  renderer.compileAsync(scene, camera).then(() => {
+    // The first render allocates the post-processing targets (~100ms): do it while
+    // the loading screen is still up so the animation never starts with a hitch.
+    composer.render()
+    gsap.ticker.add((time, deltaMs) => {
+      poseScene(driver.advance(deltaMs / 1000), time)
+      composer.render()
+    })
+    hideLoadingScreen()
+  })
+}
+
+if (import.meta.env.DEV) {
+  window.__captsurfer = {
+    THREE,
+    scene,
+    camera,
+    renderStill(t, time = 0) {
+      poseScene(t, time)
+      composer.render()
+    },
+  }
+}
