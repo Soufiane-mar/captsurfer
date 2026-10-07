@@ -1,18 +1,21 @@
 import './styles/main.css'
+import './styles/portfolio.css'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { createSceneSetup } from './scene/sceneSetup.js'
 import { framingScale } from './scene/framing.js'
 import { buildCamera } from './camera-model/buildCamera.js'
 import { applyPartPose } from './animation/assembly.js'
-import { cameraAt, apertureAt, glassVisibility, diveBlend, HERO_T } from './animation/timeline.js'
+import { cameraAt, apertureAt, glassVisibility, diveBlend, HERO_T, ASSEMBLY_END } from './animation/timeline.js'
 import { lerp } from './animation/easing.js'
-import { createScrollDriver } from './scroll/scrollDriver.js'
+import { createSmoothScroll } from './scroll/scrollDriver.js'
 import { prefersReducedMotion } from './scroll/reducedMotion.js'
+import { createPortfolioLens, createStaticPortfolio } from './portfolio/portfolioLens.js'
 import { hideLoadingScreen } from './ui/loadingScreen.js'
 
 const canvas = document.getElementById('scene')
 const heroElement = document.getElementById('hero')
+const portfolioElement = document.getElementById('portfolio')
 
 const { scene, camera, renderer, composer, resize } = createSceneSetup(canvas)
 const { root, parts, glassElements, diaphragm } = buildCamera()
@@ -56,12 +59,16 @@ function poseScene(t, time) {
   })
 }
 
+let needsRender = true
+
 function onResize() {
   resize()
   framing = framingScale(camera.aspect)
+  needsRender = true
 }
 
 if (prefersReducedMotion()) {
+  createStaticPortfolio(portfolioElement)
   const renderStill = () => {
     poseScene(HERO_T, 0)
     composer.render()
@@ -73,16 +80,29 @@ if (prefersReducedMotion()) {
   renderStill()
   hideLoadingScreen()
 } else {
-  const driver = createScrollDriver(heroElement)
+  const smoothScroll = createSmoothScroll()
+  const hero = smoothScroll.track({ trigger: heroElement, start: 'top top', end: '+=700%', pin: true })
+  const portfolioScroll = smoothScroll.track({ trigger: portfolioElement, start: 'top top', end: 'bottom bottom' })
+  const portfolio = createPortfolioLens(portfolioElement)
   window.addEventListener('resize', onResize)
-  poseScene(driver.advance(0), 0)
+
+  let lastT = -1
+  poseScene(hero.advance(0), 0)
   renderer.compileAsync(scene, camera).then(() => {
     // The first render allocates the post-processing targets (~100ms): do it while
     // the loading screen is still up so the animation never starts with a hitch.
     composer.render()
     gsap.ticker.add((time, deltaMs) => {
-      poseScene(driver.advance(deltaMs / 1000), time)
-      composer.render()
+      const dt = deltaMs / 1000
+      const t = hero.advance(dt)
+      // Parts float while exploded; once assembled the 3D only changes with scroll.
+      if (needsRender || t < ASSEMBLY_END || Math.abs(t - lastT) > 1e-6) {
+        poseScene(t, time)
+        composer.render()
+        lastT = t
+        needsRender = false
+      }
+      portfolio.update(portfolioScroll.advance(dt))
     })
     hideLoadingScreen()
   })
@@ -93,6 +113,7 @@ if (import.meta.env.DEV) {
     THREE,
     scene,
     camera,
+    parts,
     renderStill(t, time = 0) {
       poseScene(t, time)
       composer.render()

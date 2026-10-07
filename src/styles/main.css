@@ -9,7 +9,7 @@ body {
   background: #161921;
   color: #e8e8ec;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 #scene {

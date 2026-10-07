@@ -6,6 +6,8 @@ import { smoothstep, smootherstep, windowProgress } from './easing.js'
 //   0.60-0.70 assembled hero shot
 //   0.70-1.00 the view lines up with the lens axis and travels through the glass
 export const HERO_T = 0.66
+// Last part (the lens) is seated here; nothing in the model moves on its own after.
+export const ASSEMBLY_END = 0.6
 
 const AXIS_Y = -0.04
 
