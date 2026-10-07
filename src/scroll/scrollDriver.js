@@ -15,6 +15,12 @@ export function createSmoothScroll() {
   gsap.ticker.lagSmoothing(0)
 
   return {
+    // Smooth programmatic scroll (nav links). Long jumps take longer, so the hero
+    // still plays through visibly instead of snapping.
+    scrollTo(y) {
+      const distance = Math.abs(y - lenis.scroll) / window.innerHeight
+      lenis.scrollTo(y, { duration: Math.min(4, Math.max(1.2, distance * 0.3)) })
+    },
     // Progress (0..1) of a ScrollTrigger range, eased toward the real scroll position
     // with a frame-rate independent exponential follow so motion never jumps.
     track(triggerVars) {

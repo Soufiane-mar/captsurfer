@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CaptSurfer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="loading-screen">
@@ -11,10 +14,47 @@
     </div>
     <canvas id="scene"></canvas>
     <div class="vignette-overlay"></div>
+
+    <header class="site-nav">
+      <a class="site-nav__brand" href="#hero" data-nav="home">CaptSurfer</a>
+      <button class="site-nav__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="site-nav-links" class="site-nav__links">
+        <a href="#hero" data-nav="home">Home</a>
+        <a href="#portfolio" data-nav="portfolio">Portfolio</a>
+        <a href="#contact" data-nav="contact">Contact</a>
+      </nav>
+    </header>
+
     <main id="page">
-      <section id="hero"></section>
+      <section id="hero" aria-label="Home"></section>
       <section id="portfolio" aria-label="Portfolio"></section>
+      <section id="contact" class="contact">
+        <h2 class="contact__title">Contact</h2>
+        <form class="contact__form">
+          <label class="contact__field">
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name" required />
+          </label>
+          <label class="contact__field">
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label class="contact__field">
+            <span>Message</span>
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <button class="contact__send" type="submit">Send</button>
+          <p class="contact__confirmation" role="status" aria-live="polite" hidden>Thanks! I'll get back to you soon.</p>
+        </form>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <ul class="site-footer__social"></ul>
+    </footer>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

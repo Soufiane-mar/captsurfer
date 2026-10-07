@@ -1,5 +1,6 @@
 import './styles/main.css'
 import './styles/portfolio.css'
+import './styles/site.css'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { createSceneSetup } from './scene/sceneSetup.js'
@@ -11,11 +12,21 @@ import { lerp } from './animation/easing.js'
 import { createSmoothScroll } from './scroll/scrollDriver.js'
 import { prefersReducedMotion } from './scroll/reducedMotion.js'
 import { createPortfolioLens, createStaticPortfolio } from './portfolio/portfolioLens.js'
+import { FIRST_PHOTO_PROGRESS } from './portfolio/portfolioState.js'
 import { hideLoadingScreen } from './ui/loadingScreen.js'
+import { setupNav } from './ui/nav.js'
+import { setupContactForm } from './ui/contactForm.js'
+import { renderSocialLinks } from './ui/footer.js'
 
 const canvas = document.getElementById('scene')
 const heroElement = document.getElementById('hero')
 const portfolioElement = document.getElementById('portfolio')
+const contactElement = document.getElementById('contact')
+
+setupContactForm(contactElement.querySelector('form'))
+renderSocialLinks(document.querySelector('.site-footer__social'))
+
+const pageTop = (element) => element.getBoundingClientRect().top + window.scrollY
 
 const { scene, camera, renderer, composer, resize } = createSceneSetup(canvas)
 const { root, parts, glassElements, diaphragm } = buildCamera()
@@ -69,6 +80,10 @@ function onResize() {
 
 if (prefersReducedMotion()) {
   createStaticPortfolio(portfolioElement)
+  setupNav({
+    resolveTarget: (name) => (name === 'home' ? 0 : pageTop(name === 'portfolio' ? portfolioElement : contactElement)),
+    scrollTo: (y) => window.scrollTo(0, y),
+  })
   const renderStill = () => {
     poseScene(HERO_T, 0)
     composer.render()
@@ -85,6 +100,16 @@ if (prefersReducedMotion()) {
   const portfolioScroll = smoothScroll.track({ trigger: portfolioElement, start: 'top top', end: 'bottom bottom' })
   const portfolio = createPortfolioLens(portfolioElement)
   window.addEventListener('resize', onResize)
+
+  setupNav({
+    resolveTarget(name) {
+      if (name === 'home') return 0
+      if (name === 'contact') return pageTop(contactElement)
+      const { start, end } = portfolioScroll.trigger
+      return start + FIRST_PHOTO_PROGRESS * (end - start)
+    },
+    scrollTo: (y) => smoothScroll.scrollTo(y),
+  })
 
   let lastT = -1
   poseScene(hero.advance(0), 0)

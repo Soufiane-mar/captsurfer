@@ -5,6 +5,8 @@ import { smoothstep, smootherstep, windowProgress } from '../animation/easing.js
 //   0.08-0.95 the ring turns and each photo comes into focus in turn
 const OPEN_END = 0.07
 const BROWSE_START = 0.08
+// Where the "Portfolio" link lands: lens fully open, first photo in focus.
+export const FIRST_PHOTO_PROGRESS = 0.085
 const BROWSE_END = 0.95
 const DEGREES_PER_PHOTO = 360 / 12
 
