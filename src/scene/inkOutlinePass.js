@@ -59,7 +59,7 @@ const fragmentShader = /* glsl */ `
 `
 
 export class InkOutlinePass extends Pass {
-  constructor(scene, camera, { color = 0x0b0c10, thickness = 1 } = {}) {
+  constructor(scene, camera, { color = 0x1e1a15, thickness = 1 } = {}) {
     super()
     this.scene = scene
     this.camera = camera

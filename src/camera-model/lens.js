@@ -3,6 +3,7 @@ import { latheSolid, ring, ringSurfaces, knurledBand, lensElement } from './geom
 import { MOUNT_Y, MOUNT_FRONT_Z } from './body.js'
 import { lerp } from '../animation/easing.js'
 import { NO_OUTLINE_LAYER } from '../scene/inkOutlinePass.js'
+import { SAND } from '../theme.js'
 
 // 50mm lens, built in its own space: optical axis +Z, origin on the mount face.
 const BLADE_COUNT = 8
@@ -12,8 +13,9 @@ const BLADE_PIVOT_RADIUS = 0.19
 const BLADE_CLOSED = 0.4
 const BLADE_OPEN = 1.6
 const IRIS_HOUSING_RADIUS = 0.163
-// Same colour as the page background, so the end of the dive melts into the page.
-const LENS_INTERIOR_COLOR = 0x161921
+// Page colour: looking through the lens you see the page's light, and the end of the
+// dive melts straight into the page.
+const LENS_INTERIOR_COLOR = SAND
 // Inner elements are fainter than the front one so the stack never hazes over.
 const INNER_GLASS_OPACITY = 0.08
 // Spacing of the lens parts along the axis in the exploded view.

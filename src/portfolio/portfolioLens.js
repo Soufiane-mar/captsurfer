@@ -72,10 +72,12 @@ export function createPortfolioLens(section) {
       stage.classList.toggle('is-open', open > 0.99)
       lens.style.opacity = Math.max(PRE_PAINTED, open)
       lens.style.transform = `scale(${0.82 + 0.18 * open})`
-      // Iris: a dark overlay whose clear centre widens, instead of re-clipping photos.
+      // Iris: a sand overlay whose clear centre widens, instead of re-clipping photos.
       const hole = open * 72
-      iris.style.background =
-        open >= 1 ? 'none' : `radial-gradient(circle, transparent ${hole}%, #161921 ${hole + 0.5}%)`
+      const mask = `radial-gradient(circle, transparent ${hole}%, #000 ${hole + 0.5}%)`
+      iris.style.visibility = open >= 1 ? 'hidden' : 'visible'
+      iris.style.maskImage = mask
+      iris.style.webkitMaskImage = mask
 
       const focus = focusAt(p, photos.length)
       const turn = ringRotation(focus)

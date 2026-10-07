@@ -22,7 +22,7 @@
 
 .lens {
   --d: min(84vmin, 860px);
-  --ink: #0b0c10;
+  --ink: #1e1a15;
   position: relative;
   width: var(--d);
   height: var(--d);
@@ -31,7 +31,7 @@
   /* Cartoon lens barrel, matching the 3D model: ink, dark ring, ink, silver rim, ink. */
   box-shadow:
     0 0 0 calc(var(--d) * 0.008) var(--ink),
-    0 0 0 calc(var(--d) * 0.03) #2a2e38,
+    0 0 0 calc(var(--d) * 0.03) #3a342c,
     0 0 0 calc(var(--d) * 0.036) var(--ink),
     0 0 0 calc(var(--d) * 0.052) #a4a9b2,
     0 0 0 calc(var(--d) * 0.058) var(--ink);
@@ -43,15 +43,16 @@
   inset: 0;
   border-radius: 50%;
   overflow: hidden;
-  background: #161921;
+  background: #1c1a17;
 }
 
+/* Iris: the same sand paper the dive ends on, with a widening clear centre. */
 .lens__iris {
   position: absolute;
   inset: -1px;
   border-radius: 50%;
   pointer-events: none;
-  background: #161921;
+  background: var(--paper-grain), var(--sand);
 }
 
 .lens__photo {
@@ -182,7 +183,7 @@
   height: auto;
   margin-top: 0;
   padding: 12vh 6vw;
-  background: #161921;
+  background: var(--paper-grain), var(--sand);
 }
 
 .portfolio-grid {

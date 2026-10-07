@@ -88,6 +88,7 @@ function onResize() {
 }
 
 if (prefersReducedMotion()) {
+  document.body.classList.add('is-reduced-motion')
   createStaticPortfolio(portfolioElement)
   setupNav({
     resolveTarget: (name) => (name === 'home' ? 0 : pageTop(name === 'portfolio' ? portfolioElement : contactElement)),

@@ -1,11 +1,11 @@
 :root {
-  --bg: #161921;
-  --ink: #0b0c10;
-  --text: #e8e8ec;
-  --muted: #9aa0ab;
-  --silver: #a4a9b2;
-  --panel: #1f232d;
-  --ring: #2a2e38;
+  --bg: transparent;
+  --text: #2a241c;
+  --muted: #6e604c;
+  --accent: #2a241c;
+  --panel: #efe4cc;
+  --ring: #cbb892;
+  --ring-focus: #8a7552;
 }
 
 html,
@@ -22,7 +22,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 22px clamp(16px, 4vw, 48px);
-  background: linear-gradient(to bottom, rgba(22, 25, 33, 0.85), rgba(22, 25, 33, 0));
+  background: linear-gradient(to bottom, rgba(228, 212, 180, 0.92), rgba(228, 212, 180, 0));
 }
 
 .site-nav__brand {
@@ -56,7 +56,7 @@ body {
   right: 0;
   bottom: -6px;
   height: 2px;
-  background: var(--silver);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -105,7 +105,7 @@ body {
     flex-direction: column;
     gap: 0;
     padding: 8px clamp(16px, 4vw, 48px) 20px;
-    background: rgba(22, 25, 33, 0.97);
+    background: rgba(228, 212, 180, 0.97);
     border-bottom: 2px solid var(--ink);
     opacity: 0;
     transform: translateY(-8px);
@@ -194,7 +194,7 @@ body {
 
 .contact__field input:focus,
 .contact__field textarea:focus {
-  box-shadow: 0 0 0 3px var(--silver);
+  box-shadow: 0 0 0 3px var(--ring-focus);
 }
 
 .contact__send {
@@ -204,23 +204,23 @@ body {
   font-size: 14px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink);
-  background: var(--silver);
+  color: var(--sand);
+  background: var(--ink);
   border: 2px solid var(--ink);
   border-radius: 999px;
   padding: 14px 40px;
-  box-shadow: 0 4px 0 var(--ink);
+  box-shadow: 0 4px 0 var(--ring-focus);
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
 }
 
 .contact__send:hover {
-  background: #c4c8cf;
+  background: #3d352a;
 }
 
 .contact__send:active {
   transform: translateY(3px);
-  box-shadow: 0 1px 0 var(--ink);
+  box-shadow: 0 1px 0 var(--ring-focus);
 }
 
 .contact__confirmation {
@@ -263,11 +263,18 @@ body {
 .site-footer__social a:hover,
 .site-footer__social a:focus-visible {
   color: var(--text);
-  box-shadow: 0 0 0 3px var(--silver);
+  box-shadow: 0 0 0 3px var(--ring-focus);
 }
 
 .site-footer__social svg {
   width: 20px;
   height: 20px;
   fill: currentColor;
+}
+
+/* Reduced motion keeps the still camera fixed behind the page: give the sections
+   below it their own paper so it does not show through. */
+.is-reduced-motion .contact,
+.is-reduced-motion .site-footer {
+  background: var(--paper-grain), var(--sand);
 }

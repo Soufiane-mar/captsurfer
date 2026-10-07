@@ -3,13 +3,14 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { InkOutlinePass, NO_OUTLINE_LAYER } from './inkOutlinePass.js'
+import { SAND } from '../theme.js'
 
 export function createSceneSetup(canvas) {
   const isMobile = window.matchMedia('(max-width: 768px)').matches
   const pixelRatio = () => Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2)
 
   const scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x161921)
+  scene.background = new THREE.Color(SAND)
 
   const camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.01, 60)
   camera.layers.enable(NO_OUTLINE_LAYER)
